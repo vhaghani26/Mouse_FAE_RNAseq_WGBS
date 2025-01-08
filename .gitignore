@@ -10,6 +10,11 @@
 */04_multiqc/
 */05_gene_counts/
 */05_DEGs/
+*/08_cytosine_reports/
+*/09_multiqc
+*/10_DMRichR_SexCombined
+*/Comethyl_Results
+*/logs/
 .snakemake/
 rnaseq/overlapping_genes_analysis.csv
 rnaseq/06_WGCNA/
