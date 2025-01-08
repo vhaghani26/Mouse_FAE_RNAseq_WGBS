@@ -1,0 +1,169 @@
+#!/bin/bash python3 
+
+# Assign wildcard sample names
+configfile: "samples.yml"
+
+# Assign wildcard constraints
+wildcard_constraints:
+	sample='[a-zA-Z0-9_]+'
+
+rule all:
+	input:
+		expand("03_screened/{sample}_1_val_1_screen.html", sample=config["samples"]),
+		"04_multiqc/multiqc_report.html",
+		"08_sex_chromosome_stats.txt"
+
+########################
+## Genome Preparation ##
+########################
+
+rule copy_genome:
+	output: "01_raw_data/mmEnsemble107/mmEnsemble107.fa"
+	log: "00_logs/download_genome.log"
+	shell:
+		"""
+		mkdir 01_raw_data/mmEnsemble107 -p
+		cp /share/lasallelab/data/2023_KZ_RNAseq/mouse/04.Ref/genome.fa.gz 01_raw_data/mmEnsemble107/mmEnsemble107.fa.gz
+		gunzip 01_raw_data/mmEnsemble107/mmEnsemble107.fa.gz 2> {log}
+		"""
+
+rule copy_gtf:
+	output: "01_raw_data/mmEnsemble107/Mus_musculus_Ensemble_107_new.gtf.gz"
+	log: "00_logs/download_genes.log"
+	shell: "cp /share/lasallelab/data/2023_KZ_RNAseq/mouse/04.Ref/genome.gtf.gz 01_raw_data/mmEnsemble107/Mus_musculus_Ensemble_107_new.gtf.gz 2> {log}"
+
+rule index_genome:
+	input: 
+		genome_fa = "01_raw_data/mmEnsemble107/mmEnsemble107.fa",
+		gene_ann = "01_raw_data/mmEnsemble107/Mus_musculus_Ensemble_107_new.gtf.gz"
+	output:
+		indexers1 = "01_raw_data/mmEnsemble107/STAR_indexed_mmEnsemble107/chrLength.txt",
+		indexers2 = "01_raw_data/mmEnsemble107/STAR_indexed_mmEnsemble107/chrNameLength.txt",
+		indexers3 = "01_raw_data/mmEnsemble107/STAR_indexed_mmEnsemble107/chrName.txt",
+		indexers4 = "01_raw_data/mmEnsemble107/STAR_indexed_mmEnsemble107/chrStart.txt",
+		indexers5 = "01_raw_data/mmEnsemble107/STAR_indexed_mmEnsemble107/Genome",
+		indexers6 = "01_raw_data/mmEnsemble107/STAR_indexed_mmEnsemble107/genomeParameters.txt",
+		indexers7 = "01_raw_data/mmEnsemble107/STAR_indexed_mmEnsemble107/SA",
+		indexers8 = "01_raw_data/mmEnsemble107/STAR_indexed_mmEnsemble107/SAindex",	
+	log: "00_logs/index_genome.log"
+	shell: 
+		"""
+		mkdir 01_raw_data/mmEnsemble107/STAR_indexed_mmEnsemble107 -p
+		gunzip {input.gene_ann}
+		STAR --runThreadN 30 --runMode genomeGenerate --genomeDir 01_raw_data/mmEnsemble107/STAR_indexed_mmEnsemble107 --genomeFastaFiles {input.genome_fa} --sjdbGTFfile 01_raw_data/mmEnsemble107/Mus_musculus_Ensemble_107_new.gtf --sjdbOverhang 149 2> {log}
+		gzip 01_raw_data/mmEnsemble107/Mus_musculus_Ensemble_107_new.gtf
+		mv Log.out 01_raw_data/mmEnsemble107/STAR_indexed_mmEnsemble107/
+		"""
+
+rule link_screen_genomes:
+	message: "Linking genomes for screening"
+	output: temp("01_genomes/dummy.txt")
+	shell:
+		"""
+		mkdir 01_genomes -p
+		ln -s /share/lasallelab/genomes/hg19 01_genomes/hg19
+		ln -s /share/lasallelab/genomes/hg38 01_genomes/hg38
+		ln -s /share/lasallelab/genomes/Lambda 01_genomes/Lambda
+		ln -s /share/lasallelab/genomes/mm10 01_genomes/mm10
+		ln -s /share/lasallelab/genomes/PhiX 01_genomes/PhiX
+		ln -s /share/lasallelab/genomes/rheMac10 01_genomes/rheMac10
+		ln -s /share/lasallelab/genomes/rn6 01_genomes/rn6
+		touch {output}
+		"""
+
+# Using bisulfite argument due to availability of indexed genome files, but no further bisulfite analysis is conducted
+# Original error said: "Defaulting to Bowtie 2 for --bisulfite mode" so I installed Bowtie2 and Bismark and it worked
+rule screen:
+	message: "Screening samples for sample origin"
+	input:
+		conf = "00_software/fastq_screen.conf",
+		r1 = "02_trimmed/{sample}_1_val_1.fq.gz",
+		r2 = "02_trimmed/{sample}_2_val_2.fq.gz",
+		dummy_output = "01_genomes/dummy.txt"
+	output: 
+		out1 = "03_screened/{sample}_1_val_1_screen.html",
+		out2 = "03_screened/{sample}_1_val_1_screen.png",
+		out3 = "03_screened/{sample}_1_val_1_screen.txt"
+	log: "00_std_err_logs/03_screened_{sample}.log"
+	shell: "fastq_screen --conf {input.conf} --bisulfite {input.r1} {input.r2} --outdir 03_screened 2> {log}"
+
+######################
+## Read Preparation ##
+######################
+
+rule trim:
+	message: "Trimming samples"
+	input:
+		r1 = "01_raw_sequences/{sample}_1.fq.gz",
+		r2 = "01_raw_sequences/{sample}_2.fq.gz",
+	output:
+		out1 = "02_trimmed/{sample}_1.fq.gz_trimming_report.txt",
+		out2 = "02_trimmed/{sample}_1_val_1_fastqc.html",
+		out3 = "02_trimmed/{sample}_1_val_1_fastqc.zip",
+		out4 = "02_trimmed/{sample}_1_val_1.fq.gz",
+		out5 = "02_trimmed/{sample}_2.fq.gz_trimming_report.txt",
+		out6 = "02_trimmed/{sample}_2_val_2_fastqc.html",
+		out7 = "02_trimmed/{sample}_2_val_2_fastqc.zip",
+		out8 = "02_trimmed/{sample}_2_val_2.fq.gz"
+	log: "00_std_err_logs/02_trimmed_{sample}.log"
+	shell: "trim_galore --paired --cores 6 --2colour 20 --fastqc --output_dir 02_trimmed/ {input.r1} {input.r2} 2> {log}"
+
+rule align_reads:
+	input:
+		indexers1 = "01_raw_data/mmEnsemble107/STAR_indexed_mmEnsemble107/chrLength.txt",
+		indexers2 = "01_raw_data/mmEnsemble107/STAR_indexed_mmEnsemble107/chrNameLength.txt",
+		indexers3 = "01_raw_data/mmEnsemble107/STAR_indexed_mmEnsemble107/chrName.txt",
+		indexers4 = "01_raw_data/mmEnsemble107/STAR_indexed_mmEnsemble107/chrStart.txt",
+		indexers5 = "01_raw_data/mmEnsemble107/STAR_indexed_mmEnsemble107/Genome",
+		indexers6 = "01_raw_data/mmEnsemble107/STAR_indexed_mmEnsemble107/genomeParameters.txt",
+		indexers7 = "01_raw_data/mmEnsemble107/STAR_indexed_mmEnsemble107/SA",
+		indexers8 = "01_raw_data/mmEnsemble107/STAR_indexed_mmEnsemble107/SAindex",			
+		r1 = "02_trimmed/{sample}_1_val_1.fq.gz",
+		r2 = "02_trimmed/{sample}_2_val_2.fq.gz"
+	output:
+		"03_bam_files/{sample}_Aligned.sortedByCoord.out.bam"
+	log: "00_logs/{sample}_align_reads_err.log"
+	shell: 
+		"""
+		STAR --runThreadN 6 --genomeDir 01_raw_data/mmEnsemble107/STAR_indexed_mmEnsemble107 --readFilesIn {input.r1} {input.r2} --readFilesCommand zcat --outFilterType BySJout --outFilterMultimapNmax 20 --alignSJoverhangMin 8 --alignSJDBoverhangMin 1 --outFilterMismatchNmax 999 --outFilterMismatchNoverReadLmax 0.04 --alignIntronMin 20 --alignIntronMax 1000000 --alignMatesGapMax 1000000 --quantMode GeneCounts --outFileNamePrefix 03_bam_files/{wildcards.sample}_ --outSAMtype BAM SortedByCoordinate 2> {log}
+		"""
+
+rule index_bam:
+    input: "03_bam_files/{sample}_Aligned.sortedByCoord.out.bam"
+    output: "03_bam_files/{sample}_Aligned.sortedByCoord.out.bam.bai"
+    log: "00_logs/{sample}_index_bam.log"
+    shell: "samtools index -@ 6 {input} 2> {log}"
+	
+rule check_sex:
+	input:
+		expand("03_bam_files/{sample}_Aligned.sortedByCoord.out.bam.bai", sample=config["samples"]),
+		expand("03_bam_files/{sample}_Aligned.sortedByCoord.out.bam", sample=config["samples"]),
+	output: "08_sex_chromosome_stats.txt"
+	log: "00_logs/check_sex.log"
+	shell: "bash 08_sex_checker.sh > {output} 2> {log}"
+	
+#####################
+## Quality Control ##
+#####################
+
+rule qc_report:
+	message: "Generating QC reports"
+	input:
+		expand("03_bam_files/{sample}_Aligned.sortedByCoord.out.bam", sample=config["samples"]),
+		expand("03_screened/{sample}_1_val_1_screen.html", sample=config["samples"])
+	output: 
+		out1 = "04_multiqc/multiqc_report.html",
+		out2 = directory("04_multiqc/multiqc_data/")
+	log: "00_std_err_logs/04_multiqc.txt"
+	shell: 
+		"""
+		multiqc . 2> {log}
+		mv multiqc_report.html {output.out1}
+		mv multiqc_data/ {output.out2}
+		"""
+
+##################
+## DEG Analysis ##
+##################
+
+# https://github.com/ben-laufer/RNA-seq/blob/main/04-limma-voom.R

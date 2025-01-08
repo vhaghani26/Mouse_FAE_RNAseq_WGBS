@@ -1,0 +1,128 @@
+G1_1_1_4:
+     X: 2147479
+     Y: 3473
+     Proportion of Reads from X: 99.83800%
+     Proportion of Reads from Y: .16100%
+     X/Y Ratio: 618.33
+     Y/X Ratio: 0
+     Suspected Sex: Female
+G1_1_1_5:
+     X: 1740418
+     Y: 5071
+     Proportion of Reads from X: 99.70900%
+     Proportion of Reads from Y: .29000%
+     X/Y Ratio: 343.21
+     Y/X Ratio: 0
+     Suspected Sex: Female
+G1_1_1_6:
+     X: 2202181
+     Y: 24936
+     Proportion of Reads from X: 98.88000%
+     Proportion of Reads from Y: 1.11900%
+     X/Y Ratio: 88.31
+     Y/X Ratio: .01
+     Suspected Sex: Male
+G1_1_1_7:
+     X: 2574211
+     Y: 28217
+     Proportion of Reads from X: 98.91500%
+     Proportion of Reads from Y: 1.08400%
+     X/Y Ratio: 91.22
+     Y/X Ratio: .01
+     Suspected Sex: Male
+G1_1_2_4:
+     X: 1598987
+     Y: 16685
+     Proportion of Reads from X: 98.96700%
+     Proportion of Reads from Y: 1.03200%
+     X/Y Ratio: 95.83
+     Y/X Ratio: .01
+     Suspected Sex: Male
+G1_1_2_5:
+     X: 2553200
+     Y: 23247
+     Proportion of Reads from X: 99.09700%
+     Proportion of Reads from Y: .90200%
+     X/Y Ratio: 109.82
+     Y/X Ratio: 0
+     Suspected Sex: Female
+G1_1_2_6:
+     X: 2191293
+     Y: 3941
+     Proportion of Reads from X: 99.82000%
+     Proportion of Reads from Y: .17900%
+     X/Y Ratio: 556.02
+     Y/X Ratio: 0
+     Suspected Sex: Female
+G2_2_6_5:
+     X: 2062675
+     Y: 15664
+     Proportion of Reads from X: 99.24600%
+     Proportion of Reads from Y: .75300%
+     X/Y Ratio: 131.68
+     Y/X Ratio: 0
+     Suspected Sex: Female
+G2_2_6_6:
+     X: 1561406
+     Y: 7196
+     Proportion of Reads from X: 99.54100%
+     Proportion of Reads from Y: .45800%
+     X/Y Ratio: 216.98
+     Y/X Ratio: 0
+     Suspected Sex: Female
+G2_2_6_7:
+     X: 2022936
+     Y: 3892
+     Proportion of Reads from X: 99.80700%
+     Proportion of Reads from Y: .19200%
+     X/Y Ratio: 519.76
+     Y/X Ratio: 0
+     Suspected Sex: Female
+G2_2_6_8:
+     X: 2292036
+     Y: 4462
+     Proportion of Reads from X: 99.80500%
+     Proportion of Reads from Y: .19400%
+     X/Y Ratio: 513.67
+     Y/X Ratio: 0
+     Suspected Sex: Female
+G2_2_7_10:
+     X: 1834025
+     Y: 11103
+     Proportion of Reads from X: 99.39800%
+     Proportion of Reads from Y: .60100%
+     X/Y Ratio: 165.18
+     Y/X Ratio: 0
+     Suspected Sex: Female
+G2_2_7_11:
+     X: 1591527
+     Y: 23507
+     Proportion of Reads from X: 98.54400%
+     Proportion of Reads from Y: 1.45500%
+     X/Y Ratio: 67.70
+     Y/X Ratio: .01
+     Suspected Sex: Male
+G2_2_7_7:
+     X: 2162401
+     Y: 22873
+     Proportion of Reads from X: 98.95300%
+     Proportion of Reads from Y: 1.04600%
+     X/Y Ratio: 94.53
+     Y/X Ratio: .01
+     Suspected Sex: Male
+G2_2_7_8:
+     X: 1529404
+     Y: 25697
+     Proportion of Reads from X: 98.34700%
+     Proportion of Reads from Y: 1.65200%
+     X/Y Ratio: 59.51
+     Y/X Ratio: .01
+     Suspected Sex: Male
+G2_2_7_9:
+     X: 1820096
+     Y: 3533
+     Proportion of Reads from X: 99.80600%
+     Proportion of Reads from Y: .19300%
+     X/Y Ratio: 515.17
+     Y/X Ratio: 0
+     Suspected Sex: Female
