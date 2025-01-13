@@ -6,6 +6,7 @@
 */01_genomes/
 */01_raw_data/
 */01_raw_sequences/
+*/01_raw_sequences
 */02_trimmed/
 */03_bam_files/
 */03_screened/
