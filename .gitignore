@@ -31,3 +31,4 @@
 */temp/
 */.*ipynb_checkpoints/
 rnaseq/overlapping_genes_analysis.csv
+integrative_analysis/
