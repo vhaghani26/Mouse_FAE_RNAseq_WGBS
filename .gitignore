@@ -24,7 +24,11 @@
 */09_multiqc/
 */10_DMRichR/
 */10_DMRichR_SexCombined/
-*/Comethyl_Results/
+*/Comethyl_Results/*.pdf
+*/Comethyl_Results/*.rds
+*/Comethyl_Results/*.txt
+*/Comethyl_Results/*.bed
+*/Comethyl_Results/*.xlsx
 */logs/
 */task_samples.yaml
 */task_samples.yml
