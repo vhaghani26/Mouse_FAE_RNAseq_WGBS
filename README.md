@@ -38,3 +38,4 @@ For more information regarding how this data was analyzed, please see the [READM
 
 ## RNA-seq and WGBS Integration
 
+The analysis integrating the RNA-seq and WGBS data and assessing the significance of the overlapping regions is detailed in the [`01_RNAseq_WGBS_integration.ipynb`](https://github.com/vhaghani26/Mouse_FAE_RNAseq_WGBS/blob/main/01_RNAseq_WGBS_integration.ipynb) script.
