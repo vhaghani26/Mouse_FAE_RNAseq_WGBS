@@ -1,10 +1,29 @@
-# WGCNA Analysis
+# WGBS Analysis
 
 Note that all numerical labels preceding scripts and directories are reflective of the order that things were run. Some directories are not in the GitHub repository due to the fact that those directories contained sequence data that are inappropriate to host on GitHub. However, you can access all the raw data using the information below and associated scripts in this repository.
 
 ## Sample Information
 
-The following SRA IDs correspond to the samples used for the WGCNA study. All data is paired-end.
+The following SRA IDs correspond to the samples used for the WGCNA study. All data is paired-end. Specified samples were excluded from analysis due to failure of raw data to align to the reference genome. However, software continues to improve and a previous study I worked on reanalyzed data with alignment problems and succeeded, so I'm optimistic that this data will be of use one day.
+
+| SRA ID     | Original Sample Name |        Treatment        | Dam | Pup |   Sex   | Excluded From Analysis |
+|:----------:|:--------------------:|:-----------------------:|:---:|:---:|:-------:|:----------------------:|
+| SRR32924785 |        FA114        |         Control         |  1  |  4  | Female  |           -            |
+| SRR32924784 |        FA115        |         Control         |  1  |  5  | Female  |           -            |
+| SRR32924793 |        FA116        |         Control         |  1  |  6  | Male    |           -            |
+| SRR32924792 |        FA117        |         Control         |  1  |  7  | Male    |           -            |
+| SRR32924791 |        FA124        |         Control         |  2  |  4  | Male    |           -            |
+| SRR32924790 |        FA125        |         Control         |  2  |  5  | Female  |           -            |
+| SRR32924789 |        FA126        |         Control         |  2  |  6  | Female  |           -            |
+| SRR32924788 |        FA265        |    Folic Acid Excess    |  6  |  5  | Female  |           -            |
+| SRR32924787 |        FA266        |    Folic Acid Excess    |  6  |  6  | Female  |           -            |
+| SRR32924797 |        FA267        |    Folic Acid Excess    |  6  |  7  | Male    |          Yes           |
+| SRR32924796 |        FA268        |    Folic Acid Excess    |  6  |  8  | Male    |          Yes           |
+| SRR32924786 |       FA2710        |    Folic Acid Excess    |  7  | 10  | Male    |           -            |
+| SRR32924783 |       FA2711        |    Folic Acid Excess    |  7  | 11  | Female  |           -            |
+| SRR32924798 |        FA277        |    Folic Acid Excess    |  7  |  7  | Female  |           -            |
+| SRR32924795 |        FA278        |    Folic Acid Excess    |  7  |  8  | Female  |          Yes           |
+| SRR32924794 |        FA279        |    Folic Acid Excess    |  7  |  9  | Female  |          Yes           |
 
 ## 1. Processing Raw Data
 
