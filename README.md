@@ -2,6 +2,8 @@
 
 ## Citation
 
+Haghani V.†, Ali S.M.†, Cannizzaro N., Green R., LaSalle J.M., Zarbalis K. 2025 Dec 23. ["Excess prenatal folic acid supplementation alters cortical DNA methylation and gene expression networks."](https://www.frontiersin.org/journals/nutrition/articles/10.3389/fnut.2025.1699376/full) Frontiers in Nutrition.
+
 ## Raw Data
 
 All raw data associated with the study can be found under BioProject Accession Number **PRJNA1223393**. There were two treatment groups, each containing pups from the litters born from two dams. The WGBS and RNA-seq analyses were performed using samples from the same mice (i.e. the samples in each row are paired).
